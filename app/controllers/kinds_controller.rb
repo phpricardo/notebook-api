@@ -1,4 +1,10 @@
 class KindsController < ApplicationController
+
+  # TOKEN = "secret123"
+
+  # include ActionController::HttpAuthentication::Token::ControllerMethods
+
+  # before_action :authenticate
   before_action :set_kind, only: [:show, :update, :destroy]
 
   # GET /kinds
@@ -53,4 +59,14 @@ class KindsController < ApplicationController
     def kind_params
       params.require(:kind).permit(:description)
     end
+
+    # def authenticate
+    #   authenticate_or_request_with_http_token do |token, options|
+        # ActiveSupport::SecurityUtils.secure_compare(
+        #   ::Digest::SHA256.hexdigest(token),
+        #   ::Digest::SHA256.hexdigest(TOKEN)
+        # )
+        # hmac_secret = 'my$ecretK3y'
+        # JWT.decode token, hmac_secret, true, { :algorithm => 'HS256'}
+   
 end
