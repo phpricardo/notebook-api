@@ -1,8 +1,9 @@
 namespace :dev do
-  desc "Configura o ambiente de desenvolvimento."
+  desc "Configura o ambiente de desenvolvimento"
   task setup: :environment do
+    puts "Resetando o banco de dados..."
 
-    %x(rails db:drop db:create db:migrate)
+    # %x(rails db:drop db:create db:migrate)
 
     puts "Cadastrando os tipos de contato..."
 
@@ -14,39 +15,49 @@ namespace :dev do
       )
     end
 
-    puts "Tipos de Contato cadastrados."
-    
+    puts "Tipos Contato cadastrados com sucesso!"
+
+    ######################
+
     puts "Cadastrando os contatos..."
-    100.times do 
+
+    100.times do
       Contact.create!(
         name: Faker::Name.name,
         email: Faker::Internet.email,
-        birthdate: Faker::Date.between(from: 40.years.ago, to: 18.years.ago),
+        birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
         kind: Kind.all.sample
-      )  
+      )
     end
-    puts "Contatos cadastrados."
+
+    puts "Contatos cadastrados com sucesso!"
+
+    ######################
 
     puts "Cadastrando os telefones..."
-      Contact.all.each do |contact|
-        Random.rand(5).times do |i|
-          phone = Phone.create!(number:Faker::PhoneNumber.cell_phone, contact_id: contact.id)
-          contact.phones << phone
-          contact.save!
-        end
-      end
-    puts "telefones cadastrados."
 
-    puts "Cadastrando Endereços..."
-      Contact.all.each do |contact|
-          address = Address.create!(
-            street: Faker::Address.street_address,
-            city: Faker::Address.city,
-            contact: contact  
-          )
+    Contact.all.each do |contact|
+      Random.rand(5).times do |i|
+        phone = Phone.create!(number:Faker::PhoneNumber.cell_phone)
+        contact.phones << phone
+        contact.save!
       end
-    puts "Endereços cadastrados."
+    end
 
+    puts "Telefones cadastrados com sucesso!"
+
+    ######################
+
+    puts "Cadastrando os endereços..."
+
+    Contact.all.each do |contact|
+      Address.create(
+        street: Faker::Address.street_address,
+        city: Faker::Address.city,
+        contact: contact
+      )
+    end
+
+    puts "Endereços cadastrados com sucesso!"
   end
-
 end

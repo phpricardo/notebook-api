@@ -1,5 +1,5 @@
 class KindsController < ApplicationController
-
+  # before_action :authenticate_user!
   # TOKEN = "secret123"
 
   # include ActionController::HttpAuthentication::Token::ControllerMethods
@@ -68,5 +68,4 @@ class KindsController < ApplicationController
         # )
         # hmac_secret = 'my$ecretK3y'
         # JWT.decode token, hmac_secret, true, { :algorithm => 'HS256'}
-   
 end
